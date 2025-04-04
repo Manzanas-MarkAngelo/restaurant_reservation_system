@@ -1,0 +1,10 @@
+<!-- app/views/shared/_flash_messages.html.erb -->
+<% if flash.any? %>
+  <div id="flash_messages">
+    <% flash.each do |type, message| %>
+      <div class="alert alert-<%= 'success' if type == 'notice' %><%= 'danger' if type == 'alert' %>">
+        <%= message %>
+      </div>
+    <% end %>
+  </div>
+<% end %>
