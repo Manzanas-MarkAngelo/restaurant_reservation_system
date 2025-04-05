@@ -14,6 +14,12 @@
 <% end %>
 
 <div class="d-flex justify-content-center my-3">
+  <span class="badge bg-success mx-2">Available</span>
+  <span class="badge bg-danger mx-2">Unavailable</span>
+  <span class="badge bg-secondary mx-2">Past</span>
+</div>
+
+<div class="d-flex justify-content-center my-3">
   <%= link_to 'Previous', request.params.merge(start_date: @previous_month.to_date), class: 'btn btn-secondary mx-2' %>
   <%= link_to 'Today', request.params.merge(start_date: Date.today), class: 'btn btn-primary mx-2' %>
   <%= link_to 'Next', request.params.merge(start_date: @next_month.to_date), class: 'btn btn-secondary mx-2' %>
@@ -22,20 +28,34 @@
 <%= month_calendar do |date| %>
   <% 
     if date < Date.today 
-      card_class = "bg-secondary text-white" # past
+      card_class = "bg-secondary text-white"
+      button_text = "Past Date"
+      button_class = "btn btn-light"
+      button_disabled = true
     elsif @unavailable_dates.include?(date)
-      card_class = "bg-danger text-white"    # unavailable
+      card_class = "bg-danger text-white"
+      button_text = "Unavailable"
+      button_class = "btn btn-light"
+      button_disabled = true
     else
-      card_class = "bg-success text-white"   # available
+      card_class = "bg-success text-white"
+      button_text = "Book Now"
+      button_class = "btn btn-primary"
+      button_disabled = false
     end
   %>
+
   <div class="card m-2 p-3 <%= card_class %>">
     <div class="card-body">
-      <h5 class="card-title">
-        <%= date.strftime("%B %d, %Y") %>
-      </h5>
+      <h5 class="card-title"><%= date.strftime("%B %d, %Y") %></h5>
+      
+      <%= button_tag button_text, 
+          class: "#{button_class} mt-2", 
+          disabled: button_disabled,
+          data: { date: date } %>
     </div>
   </div>
 <% end %>
+
 
 
