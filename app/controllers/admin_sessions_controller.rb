@@ -6,7 +6,7 @@ class AdminSessionsController < ApplicationController
   def create
     @admin = Admin.find_by(email: params[:admin][:email])
 
-    # Check if the admin exists and authenticate the password
+    # Check if the admin exists and authenticate the passwordAAAAA
     if @admin.nil?
       flash.now[:alert] = "Admin with this email does not exist."
       render :new and return
