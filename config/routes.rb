@@ -1,4 +1,12 @@
 Rails.application.routes.draw do
+  # Admin login and logout routes
+  get "admin/login", to: "admin_sessions#new", as: "admin_login"
+  post "admin/login", to: "admin_sessions#create"
+  delete "admin/logout", to: "admin_sessions#destroy", as: "admin_logout"
+
+  # Admin dashboard route (fix the controller and action)
+  get "admin_dashboard", to: "admin_dashboard#index", as: "admin_dashboard"
+
   get "reservations/index"
   root "pages#home"
   resources :reservations, only: [ :index ]

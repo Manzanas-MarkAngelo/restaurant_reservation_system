@@ -12,4 +12,8 @@ class ApplicationController < ActionController::Base
   def logged_in?
     current_user.present?
   end
+
+  def current_admin
+    @current_admin ||= Admin.find(session[:admin_id]) if session[:admin_id]
+  end
 end

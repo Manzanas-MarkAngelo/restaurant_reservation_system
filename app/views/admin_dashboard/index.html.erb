@@ -1,0 +1,15 @@
+<h1>Admin Dashboard</h1>
+
+<p>Welcome, <%= @admin.email %>!</p>
+
+<!-- You can add any dashboard components here, such as stats, recent activity, etc. -->
+
+<div class="dashboard-info">
+  <p>Here is some important information...</p>
+  <!-- Add more content or components as needed -->
+</div>
+
+<%= form_with(url: admin_logout_path, method: :delete, class: 'inline-form') do %>
+  <%= submit_tag 'Logout', class: 'btn btn-danger' %>
+<% end %>
+
