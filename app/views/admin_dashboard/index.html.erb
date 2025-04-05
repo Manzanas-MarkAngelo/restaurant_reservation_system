@@ -20,7 +20,16 @@
 </div>
 
 <%= month_calendar do |date| %>
-  <div class="card m-2 p-3">
+  <% 
+    if date < Date.today 
+      card_class = "bg-secondary text-white" # past
+    elsif @unavailable_dates.include?(date)
+      card_class = "bg-danger text-white"    # unavailable
+    else
+      card_class = "bg-success text-white"   # available
+    end
+  %>
+  <div class="card m-2 p-3 <%= card_class %>">
     <div class="card-body">
       <h5 class="card-title">
         <%= date.strftime("%B %d, %Y") %>
@@ -28,4 +37,5 @@
     </div>
   </div>
 <% end %>
+
 

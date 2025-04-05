@@ -9,6 +9,7 @@ class AdminDashboardController < ApplicationController
         # Calculate previous and next month dates manually
         @previous_month = @start_date.prev_month.beginning_of_month
         @next_month = @start_date.next_month.beginning_of_month
+        @unavailable_dates = [ Date.new(2025, 4, 5), Date.new(2025, 4, 12) ] # for example
   end
 
   private
