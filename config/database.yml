@@ -81,9 +81,9 @@ test:
 production:
   primary: &primary_production
     <<: *default
-    database: restaurant_reservation_system_production
-    username: restaurant_reservation_system
-    password: <%= ENV["RESTAURANT_RESERVATION_SYSTEM_DATABASE_PASSWORD"] %>
+    url: <%= ENV["DATABASE_URL"] %>  # Use the DATABASE_URL environment variable
+    pool: 5
+    timeout: 5000
   cache:
     <<: *primary_production
     database: restaurant_reservation_system_production_cache

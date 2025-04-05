@@ -27,24 +27,23 @@
           <a class="nav-link disabled" aria-disabled="true">Disabled</a>
         </li>
       </ul>
-<ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-  <% if logged_in? %>
-    <li class="nav-item">
-      <%= current_user.email %>
-    </li>
-    <li class="nav-item">
-      <%= button_to "Logout", logout_path, method: :delete, class: "btn btn-outline-secondary", form: { "data-turbo": false } %>
-    </li>
-  <% else %>
-    <li class="nav-item">
-      <%= link_to "Sign Up", register_path, class: "nav-link" %>
-    </li>
-    <li class="nav-item">
-      <%= link_to "Login", login_path, class: "nav-link" %>
-    </li>
-  <% end %>
-</ul>
-
+      <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+        <% if logged_in? %>
+          <li class="nav-item">
+            <%= link_to current_user.email, root_path, class: "nav-link" %>
+          </li>
+          <li class="nav-item">
+            <%= button_to "Logout", logout_path, method: :delete, class: "btn btn-outline-secondary", form: { "data-turbo": false } %>
+          </li>
+        <% else %>
+          <li class="nav-item">
+            <%= link_to "Sign Up", register_path, class: "nav-link" %>
+          </li>
+          <li class="nav-item">
+            <%= link_to "Login", login_path, class: "nav-link" %>
+          </li>
+        <% end %>
+      </ul>
     </div>
   </div>
 </nav>
