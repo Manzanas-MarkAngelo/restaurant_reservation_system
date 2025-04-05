@@ -9,6 +9,9 @@ class User < ApplicationRecord
   validates :password_confirmation, presence: true
   validate :passwords_match
 
+  # relationships
+  has_many :reservations
+
   # Custom validation for password and confirmation match
   def passwords_match
     if password != password_confirmation

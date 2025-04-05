@@ -8,3 +8,10 @@
  *
  * Consider organizing styles into separate files for maintainability.
  */
+ .calendar-heading {
+  display: none !important;
+}
+
+.navbar-shadow {
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Customize this value as needed */
+}

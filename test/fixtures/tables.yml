@@ -1,0 +1,13 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  time_slot: one
+  table_number: 1
+  max_persons: 1
+  is_reserved: false
+
+two:
+  time_slot: two
+  table_number: 1
+  max_persons: 1
+  is_reserved: false
