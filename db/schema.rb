@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_04_05_062337) do
+ActiveRecord::Schema[8.0].define(version: 2025_04_06_072011) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -43,6 +43,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_05_062337) do
     t.boolean "is_reserved"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "is_available", default: true
     t.index ["table_id"], name: "index_table_assignments_on_table_id"
     t.index ["time_slot_id"], name: "index_table_assignments_on_time_slot_id"
   end
@@ -60,6 +61,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_05_062337) do
     t.boolean "is_active"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "max_tables"
+    t.integer "time_slot_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -77,4 +80,5 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_05_062337) do
   add_foreign_key "reservations", "users"
   add_foreign_key "table_assignments", "tables"
   add_foreign_key "table_assignments", "time_slots"
+  add_foreign_key "time_slots", "time_slots"
 end

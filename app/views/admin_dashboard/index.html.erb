@@ -35,14 +35,14 @@
       button_disabled = true
     elsif @available_dates.include?(date)
       card_class = "bg-success text-white"
-      button_text = "Book Now"
+      button_text = "Time slots"
       button_class = "btn btn-primary"
       button_disabled = false
     else
       card_class = "bg-danger text-white"
-      button_text = "Unavailable"
+      button_text = "Time slots"
       button_class = "btn btn-light"
-      button_disabled = true
+      button_disabled = false
     end
   %>
 
