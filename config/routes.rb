@@ -30,4 +30,5 @@ Rails.application.routes.draw do
 
   # Custom route for creating a static admin
   post "create_static_admin", to: "admin_sessions#create_static_admin", as: :create_static_admin
+   get "user_time_slots", to: "time_slots#user_index"
 end
