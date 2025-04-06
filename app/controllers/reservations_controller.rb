@@ -8,4 +8,17 @@ class ReservationsController < ApplicationController
       head :bad_request
     end
   end
+
+  def new
+    @time_slot = TimeSlot.find_by(id: params[:time_slot_id])
+    if @time_slot
+      @table_assignments = @time_slot.table_assignments.includes(:table)
+    else
+      redirect_to root_path, alert: "Invalid time slot"
+    end
+  end
+
+  def form
+    @table_assignment = TableAssignment.find(params[:id])
+  end
 end

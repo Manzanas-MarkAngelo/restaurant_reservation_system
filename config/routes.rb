@@ -10,7 +10,15 @@ Rails.application.routes.draw do
 
   get "reservations/index"
   root "pages#home"
-  resources :reservations, only: [ :index ]
+
+  resources :reservations
+
+  resources :reservations do
+    member do
+      get "form"  # This creates form_reservation_path(:id)
+    end
+  end
+
 
   get "register", to: "registration#new", as: "registration"
   post "register", to: "registration#create"
@@ -30,5 +38,5 @@ Rails.application.routes.draw do
 
   # Custom route for creating a static admin
   post "create_static_admin", to: "admin_sessions#create_static_admin", as: :create_static_admin
-   get "user_time_slots", to: "time_slots#user_index"
+  get "user_time_slots", to: "time_slots#user_index"
 end
