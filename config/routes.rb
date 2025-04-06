@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  get "time_slots/index"
+  resources :tables
   # Admin login and logout routes
   get "admin/login", to: "admin_sessions#new", as: "admin_login"
   post "admin/login", to: "admin_sessions#create"
@@ -23,4 +23,5 @@ Rails.application.routes.draw do
     get "time_slots", to: "time_slots#index"
 
     resources :time_slots
+    resources :table_assignments
 end

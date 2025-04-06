@@ -41,6 +41,12 @@ class TimeSlotsController < ApplicationController
     @time_slot = TimeSlot.find(params[:id])
     old_max = @time_slot.max_tables
 
+    # Parse start_time and calculate end_time
+    if params[:time_slot][:start_time].present?
+      start_time = Time.zone.parse(params[:time_slot][:start_time])
+      params[:time_slot][:end_time] = (start_time + 1.hour).strftime("%H:%M")
+    end
+
     if @time_slot.update(time_slot_params)
       if @time_slot.max_tables != old_max
         current_count = @time_slot.table_assignments.count
@@ -66,6 +72,7 @@ class TimeSlotsController < ApplicationController
       render :edit, status: :unprocessable_entity
     end
   end
+
 
 
   def destroy

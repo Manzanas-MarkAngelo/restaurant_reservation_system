@@ -1,0 +1,25 @@
+<h1>All Table Assignments</h1>
+
+<div class="row">
+  <% @table_assignments.each do |assignment| %>
+    <div class="col-md-2 mb-4"> <!-- Changed from col-md-4 to col-md-2 -->
+      <div class="card shadow-sm">
+        <div class="card-body">
+          <h5 class="card-title">Table <%= assignment.table.table_number %></h5>
+          <p class="card-text">
+            <strong>Max Persons:</strong> <%= assignment.max_persons %><br>
+            <strong>Available:</strong>
+            <% if assignment.is_available %>
+              <span class="badge bg-success">Yes</span>
+            <% else %>
+              <span class="badge bg-danger">No</span>
+            <% end %>
+          </p>
+
+          <%= link_to "Edit", edit_table_path(assignment), class: "btn btn-primary btn-sm mt-2", data: { turbo: false } %>
+
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>
