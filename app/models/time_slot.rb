@@ -1,5 +1,5 @@
 class TimeSlot < ApplicationRecord
-  has_many :table_assignments
+  has_many :table_assignments, dependent: :destroy
   has_many :tables, through: :table_assignments
 
   validates :start_time, :end_time, :max_tables, presence: true
@@ -15,8 +15,12 @@ class TimeSlot < ApplicationRecord
 
   # Custom method to check if the start time is unique for the same date
   def unique_start_time_for_date
-    existing_time_slot = TimeSlot.where(date: date, start_time: start_time).exists?
-    if existing_time_slot
+    return if start_time.blank? || date.blank?
+
+    existing_time_slot = TimeSlot.where(date: date, start_time: start_time)
+    existing_time_slot = existing_time_slot.where.not(id: id) if persisted?
+
+    if existing_time_slot.exists?
       errors.add(:start_time, "is already taken for this date")
     end
   end

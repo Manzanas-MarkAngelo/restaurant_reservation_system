@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_04_06_055958) do
+ActiveRecord::Schema[8.0].define(version: 2025_04_06_072011) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -43,7 +43,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_06_055958) do
     t.boolean "is_reserved"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.boolean "is_available"
+    t.boolean "is_available", default: true
     t.index ["table_id"], name: "index_table_assignments_on_table_id"
     t.index ["time_slot_id"], name: "index_table_assignments_on_time_slot_id"
   end

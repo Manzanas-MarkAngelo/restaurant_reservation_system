@@ -27,24 +27,46 @@ class TimeSlotsController < ApplicationController
     end
 
     if @time_slot.save
-      redirect_to admin_dashboard_path, notice: "Time slot created successfully."
+      assign_tables_to_time_slot(@time_slot)
+      redirect_to admin_dashboard_path, notice: "Time slot created and tables assigned successfully."
     else
-      # If the model is not valid, render the new form again and show errors
       render :new, status: :unprocessable_entity
     end
   end
-
 
   def edit
   end
 
   def update
+    @time_slot = TimeSlot.find(params[:id])
+    old_max = @time_slot.max_tables
+
     if @time_slot.update(time_slot_params)
-      redirect_to admin_dashboard_path, notice: "Time slot updated successfully."
+      if @time_slot.max_tables != old_max
+        current_count = @time_slot.table_assignments.count
+        difference = @time_slot.max_tables - current_count
+
+        if difference > 0
+          available_table_ids = Table.pluck(:id)
+          difference.times do
+            TableAssignment.create!(
+              time_slot: @time_slot,
+              table_id: available_table_ids.sample,
+              max_persons: 2,
+              is_available: true
+            )
+          end
+        elsif difference < 0
+          @time_slot.table_assignments.limit(difference.abs).destroy_all
+        end
+      end
+
+      redirect_to admin_dashboard_path, notice: "Time slot updated."
     else
       render :edit, status: :unprocessable_entity
     end
   end
+
 
   def destroy
     @time_slot.destroy
@@ -58,10 +80,25 @@ class TimeSlotsController < ApplicationController
   end
 
   def time_slot_params
-    params.require(:time_slot).permit(:date, :start_time, :end_time, :is_active, :max_tables)
+    params.require(:time_slot).permit(:date, :start_time, :end_time, :max_tables, :is_active)
   end
 
   def active_tables
     table_assignments.where(is_active: true).count
+  end
+
+  def assign_tables_to_time_slot(time_slot)
+    # Grab up to max_tables number of available tables
+    available_tables = Table.limit(time_slot.max_tables)
+
+    available_tables.each do |table|
+      TableAssignment.create!(
+        table: table,
+        time_slot: time_slot,
+        max_persons: 2,
+        is_reserved: false,
+        is_available: true
+      )
+    end
   end
 end
