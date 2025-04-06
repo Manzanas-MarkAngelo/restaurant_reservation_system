@@ -7,13 +7,15 @@
   <div class="form-group">
     <%= form.label :start_time, "Start Time" %>
     <%= form.select :start_time, 
-         options_for_select(@hours.map { |h| ["#{h % 12 == 0 ? 12 : h % 12} #{h < 12 ? 'AM' : 'PM'}", h] }), 
+         options_for_select(@hours&.map { |h| ["#{h % 12 == 0 ? 12 : h % 12} #{h < 12 ? 'AM' : 'PM'}", h] }), 
          { prompt: "Select Start Time" }, class: "form-control" %>
+    <%= @time_slot.errors.full_messages_for(:start_time).join(", ") if @time_slot.errors.any? %>
   </div>
 
   <div class="form-group">
     <%= form.label :max_tables, "Max Tables" %>
     <%= form.number_field :max_tables, class: "form-control", min: 1 %>
+    <%= @time_slot.errors.full_messages_for(:max_tables).join(", ") if @time_slot.errors.any? %>
   </div>
 
   <div class="form-group">

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_04_06_051452) do
+ActiveRecord::Schema[8.0].define(version: 2025_04_06_055958) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -62,6 +62,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_06_051452) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "max_tables"
+    t.integer "time_slot_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -79,4 +80,5 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_06_051452) do
   add_foreign_key "reservations", "users"
   add_foreign_key "table_assignments", "tables"
   add_foreign_key "table_assignments", "time_slots"
+  add_foreign_key "time_slots", "time_slots"
 end

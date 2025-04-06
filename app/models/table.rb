@@ -4,5 +4,5 @@ class Table < ApplicationRecord
   has_many :time_slots, through: :table_assignments
   has_many :reservations
 
-  validates :table_number, uniqueness: { scope: :time_slot_id }
+  validates :table_number, uniqueness: true
 end
