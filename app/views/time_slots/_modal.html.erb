@@ -1,23 +1,44 @@
 <div class="modal fade" id="timeSlotModal" tabindex="-1" aria-labelledby="timeSlotModalLabel" aria-hidden="true" data-turbo="false">
-  <div class="modal-dialog modal-dialog-centered">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="timeSlotModalLabel">Available Time Slots for <%= date.strftime("%B %d, %Y") %></h5>
+        <h5 class="modal-title" id="timeSlotModalLabel">Time Slots for <%= date.strftime("%B %d, %Y") %></h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
         <% if time_slots.any? %>
-          <ul class="list-group">
+          <ul class="list-group mb-3">
             <% time_slots.each do |slot| %>
-              <li class="list-group-item d-flex justify-content-between align-items-center">
-                <%= slot.start_time.strftime("%I:%M %p") %> - <%= slot.end_time.strftime("%I:%M %p") %>
-                <%= button_to "Reserve", "#", method: :get, class: "btn btn-primary btn-sm disabled" %>
+              <li class="list-group-item d-flex justify-content-between align-items-center flex-column align-items-start">
+                <div class="w-100 d-flex justify-content-between">
+                  <div>
+                    <strong><%= slot.start_time.strftime("%I:%M %p") %> - <%= slot.end_time.strftime("%I:%M %p") %></strong>
+                    <div>Active Tables: <%= slot.active_tables %></div> 
+
+                    <% if slot.table_assignments.any? %>
+                      <div class="mt-2">
+                        <strong>Table Assignments:</strong>
+                        <% slot.table_assignments.each do |assignment| %>
+                          <div>
+                            Table <%= assignment.table.table_number %>: Max Persons = <%= assignment.max_persons %>
+                          </div>
+                        <% end %>
+                      </div>
+                    <% end %>
+                  </div>
+                  <div class="btn-group">
+                    <%= link_to "Edit", edit_time_slot_path(slot), class: "btn btn-warning btn-sm" %>
+                    <%= button_to "Delete", time_slot_path(slot), method: :delete, data: { confirm: "Are you sure?" }, class: "btn btn-danger btn-sm" %>
+                  </div>
+                </div>
               </li>
             <% end %>
           </ul>
         <% else %>
           <p>No time slots available for this date.</p>
         <% end %>
+
+        <%= link_to "Add Time Slot", new_time_slot_path(date: date), class: "btn btn-success" %>
       </div>
     </div>
   </div>

@@ -21,4 +21,6 @@ Rails.application.routes.draw do
 
     # config/routes.rb
     get "time_slots", to: "time_slots#index"
+
+    resources :time_slots
 end
