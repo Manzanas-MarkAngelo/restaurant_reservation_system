@@ -20,21 +20,29 @@ class TimeSlotsController < ApplicationController
   def create
     @time_slot = TimeSlot.new(time_slot_params)
     @time_slot.is_active = true
+
+    # Set the end time to 1 hour after the selected start time
+    if @time_slot.start_time.present?
+      @time_slot.end_time = @time_slot.start_time + 1.hour
+    end
+
     if @time_slot.save
-      redirect_to admin_dashboard_path, notice: "Time slot created."
+      redirect_to admin_dashboard_path, notice: "Time slot created successfully."
     else
-      render :new
+      # If the model is not valid, render the new form again and show errors
+      render :new, status: :unprocessable_entity
     end
   end
+
 
   def edit
   end
 
   def update
     if @time_slot.update(time_slot_params)
-      redirect_to admin_dashboard_path, notice: "Time slot updated."
+      redirect_to admin_dashboard_path, notice: "Time slot updated successfully."
     else
-      render :edit
+      render :edit, status: :unprocessable_entity
     end
   end
 

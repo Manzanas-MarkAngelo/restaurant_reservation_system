@@ -12,13 +12,6 @@
   </div>
 
   <div class="form-group">
-    <%= form.label :end_time, "End Time" %>
-    <%= form.select :end_time, 
-         options_for_select(@hours.map { |h| ["#{h % 12 == 0 ? 12 : h % 12} #{h < 12 ? 'AM' : 'PM'}", h] }), 
-         { prompt: "Select End Time" }, class: "form-control" %>
-  </div>
-
-  <div class="form-group">
     <%= form.label :max_tables, "Max Tables" %>
     <%= form.number_field :max_tables, class: "form-control", min: 1 %>
   </div>
