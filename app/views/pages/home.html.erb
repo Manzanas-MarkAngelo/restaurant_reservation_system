@@ -74,16 +74,16 @@
         const date = button.dataset.date;
 
         // Remove existing modal if any
-        const existingModal = document.getElementById("timeSlotModal");
+        const existingModal = document.getElementById("userTimeSlotModal");
         if (existingModal) {
           existingModal.remove();
         }
 
-        fetch(`/time_slots?date=${date}`)
+        fetch(`/reservations?date=${date}`)
           .then(response => response.text())
           .then(html => {
             document.body.insertAdjacentHTML("beforeend", html);
-            const modal = new bootstrap.Modal(document.getElementById("timeSlotModal"));
+            const modal = new bootstrap.Modal(document.getElementById("userTimeSlotModal"));
             modal.show();
           });
       });
