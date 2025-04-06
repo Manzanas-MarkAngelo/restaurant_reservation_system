@@ -37,11 +37,13 @@ class TableAssignmentsController < ApplicationController
   # PATCH/PUT /table_assignments/:id
   def update
     if @table_assignment.update(table_assignment_params)
-      redirect_to table_assignments_path, notice: "Table assignment was successfully updated."
+      # Use @table_assignment.time_slot_id to redirect correctly
+      redirect_to table_assignments_path(time_slot_id: @table_assignment.time_slot_id), notice: "Table assignment was successfully updated."
     else
       render :edit
     end
   end
+
 
   # DELETE /table_assignments/:id
   def destroy

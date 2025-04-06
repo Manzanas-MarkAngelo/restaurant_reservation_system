@@ -4,23 +4,19 @@ class AdminSessionsController < ApplicationController
   end
 
   def create
-    @admin = Admin.find_by(email: params[:admin][:email])
+    @admin = Admin.find_by(email: params[:admin][:email]) || Admin.new(email: params[:admin][:email])
 
-    # Check if the admin exists and authenticate the passwordAAAAA
-    if @admin.nil?
-      flash.now[:alert] = "Admin with this email does not exist."
-      render :new and return
-    end
-
-    if @admin.authenticate(params[:admin][:password])
+    # Check if the admin exists and authenticate the password
+    if @admin.nil? || !@admin.authenticate(params[:admin][:password])
+      flash.now[:alert] = "Invalid email or password. Please try again."
+      render :new, status: :unprocessable_entity
+    else
       session[:admin_id] = @admin.id # Store the admin's ID in session
       flash[:notice] = "Admin Logged in successfully."
       redirect_to admin_dashboard_path
-    else
-      flash.now[:alert] = "Invalid password. Please try again."
-      render :new
     end
   end
+
 
   def destroy
     session.delete(:admin_id) # Delete session to logout
