@@ -19,9 +19,15 @@ Rails.application.routes.draw do
   post "login", to: "session#create"    # Handle login form submission
   delete "logout", to: "session#destroy" # Handle logout
 
-    # config/routes.rb
-    get "time_slots", to: "time_slots#index"
+  # config/routes.rb
+  get "time_slots", to: "time_slots#index"
 
-    resources :time_slots
-    resources :table_assignments
+  resources :time_slots
+  resources :table_assignments
+
+  # Define routes for admin sessions
+  resources :admin_sessions, only: [ :new, :create, :destroy ]
+
+  # Custom route for creating a static admin
+  post "create_static_admin", to: "admin_sessions#create_static_admin", as: :create_static_admin
 end
