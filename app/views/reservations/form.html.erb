@@ -1,37 +1,27 @@
-<h1>Reserve Table <%= @table_assignment.table.table_number %></h1>
+<h1>Reserve a Table</h1>
 
-<% if @time_slot %>
-  <p>
-    <strong>Time Slot:</strong>
-    <%= @time_slot.start_time.strftime("%I:%M %p") %> -
-    <%= @time_slot.end_time.strftime("%I:%M %p") %>
-  </p>
-<% end %>
-
-<!-- Display current user information (not as form inputs) -->
-<div class="form-group">
-  <strong>Name:</strong>
-  <span><%= @user.full_name %></span>
-</div>
-<div class="form-group">
-  <strong>Contact Number:</strong>
-  <span><%= @user.contact_number %></span>
+<!-- Display table and time slot info (not submitted) -->
+<div class="mb-3">
+  <p><strong>Table:</strong> Table <%= @table_assignment.table.table_number %></p>
+  <p><strong>Time Slot:</strong> <%= @time_slot.start_time.strftime("%I:%M %p") %> -
+    <%= @time_slot.end_time.strftime("%I:%M %p") %></p>
+  <p><strong>User:</strong> <%= @user.full_name %></p>
 </div>
 
-<%= form_with url: reservations_path, method: :post, local: true, data: { turbo: false } do |form| %>
+<!-- Reservation form that submits to the confirm action -->
+<%= form_with model: @reservation, url: confirm_reservations_path, method: :post, data: { turbo: false } do |f| %>
   <div class="form-group">
-    <%= form.label :party_size, "Number of Persons" %>
-    <%= form.number_field :party_size, min: 1, max: @table_assignment.max_persons, class: "form-control", required: true %>
-    <small class="form-text text-muted">
-      Maximum allowed: <%= @table_assignment.max_persons %>
-    </small>
+    <%= f.label :party_size, "Number of Persons" %>
+    <%= f.number_field :party_size, class: "form-control", min: 1, required: true %>
   </div>
-
-  <!-- Include the table_assignment_id and time_slot_id as hidden fields -->
-  <%= form.hidden_field :table_assignment_id, value: @table_assignment.id %>
-  <%= form.hidden_field :time_slot_id, value: @time_slot.id %>
+  
+  <!-- Hidden fields to carry over necessary data -->
+  <%= f.hidden_field :time_slot_id, value: @time_slot.id %>
+  <%= f.hidden_field :table_assignment_id, value: @table_assignment.id %>
 
   <div class="form-group mt-3">
-    <%= form.submit "Reserve Table", class: "btn btn-success" %>
+    <%= f.submit "Review Reservation", class: "btn btn-primary" %>
   </div>
 <% end %>
+
+<%= link_to "Back to Time Slots", root_path, class: "btn btn-secondary mt-3" %>

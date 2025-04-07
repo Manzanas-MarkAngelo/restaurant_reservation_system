@@ -16,6 +16,7 @@ Rails.application.routes.draw do
 
   resources :reservations do
     collection do
+      post "confirm"
       get "my_reservations"
     end
 
@@ -23,6 +24,8 @@ Rails.application.routes.draw do
       get "form"  # This creates form_reservation_path(:id)
       patch "cancel"
       patch "admin_cancel", to: "reservations#admin_cancel"
+      get "edit"
+      patch "update"
     end
   end
 

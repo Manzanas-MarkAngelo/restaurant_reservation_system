@@ -31,6 +31,6 @@ class TablesController < ApplicationController
   end
 
   def table_assignment_params
-    params.require(:table_assignment).permit(:max_persons, :is_available)
+    params.require(:table_assignment).permit(:max_persons)
   end
 end
