@@ -1,4 +1,5 @@
 class ReservationsController < ApplicationController
+  before_action :require_login, except: [ :index ]
   def index
     selected_date = Date.parse(params[:date]) rescue nil
     if selected_date
@@ -116,5 +117,11 @@ class ReservationsController < ApplicationController
 
   def reservation_params
     params.require(:reservation).permit(:party_size, :status, :time_slot_id, :table_assignment_id)
+  end
+  def require_login
+    unless current_user
+      flash[:alert] = "You must be logged in to make a reservation."
+      redirect_to login_path
+    end
   end
 end
