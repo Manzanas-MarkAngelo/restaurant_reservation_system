@@ -15,22 +15,35 @@
 
 <%= month_calendar do |date| %>
   <% 
-    if date < Date.today 
-      card_class = "bg-secondary text-white"
-      button_text = "Past Date"
-      button_class = "btn btn-light"
-      button_disabled = true
-    elsif @available_dates.include?(date)
-      card_class = "bg-success text-white"
-      button_text = "Book Now"
-      button_class = "btn btn-primary"
-      button_disabled = false
-    else
-      card_class = "bg-danger text-white"
-      button_text = "Unavailable"
-      button_class = "btn btn-light"
-      button_disabled = true
-    end
+if date < Date.today 
+  card_class = "bg-secondary text-white"
+  button_text = "Past Date"
+  button_class = "btn btn-light"
+  button_disabled = true
+elsif @available_dates.include?(date)
+  # Check if any table assignments are available and not reserved
+  unreserved_tables = TableAssignment.joins(:time_slot)
+                                     .where(time_slots: { date: date })
+                                     .where(is_reserved: false)
+                                     .exists?
+
+  if unreserved_tables
+    card_class = "bg-success text-white"
+    button_text = "Book Now"
+    button_class = "btn btn-primary"
+    button_disabled = false
+  else
+    card_class = "bg-danger text-white"
+    button_text = "Fully Booked"
+    button_class = "btn btn-light"
+    button_disabled = true
+  end
+else
+  card_class = "bg-danger text-white"
+  button_text = "Unavailable"
+  button_class = "btn btn-light"
+  button_disabled = true
+end
   %>
 
   <div class="card m-2 p-3 <%= card_class %>">

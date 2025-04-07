@@ -22,22 +22,41 @@ class ReservationsController < ApplicationController
     @table_assignment = TableAssignment.find(params[:id])
     @time_slot = @table_assignment.time_slot
     @user = current_user
+    # Build a new reservation object with preset values.
+    @reservation = Reservation.new(
+      time_slot_id: @time_slot.id,
+      table_assignment_id: @table_assignment.id,
+      user_id: current_user.id
+    )
+  end
+
+  def confirm
+    # Build reservation from session or params
+    @reservation = Reservation.new(
+      party_size: params[:reservation][:party_size],
+      time_slot_id: params[:reservation][:time_slot_id],
+      table_assignment_id: params[:reservation][:table_assignment_id],
+      user_id: current_user.id
+    )
+    @time_slot = @reservation.time_slot
+    @user = current_user
+
+    unless @reservation.valid?
+      flash[:alert] = @reservation.errors.full_messages.join(", ")
+      redirect_to form_reservation_path(@reservation.table_assignment_id)
+      nil
+    end
   end
 
   def create
-    reservation = Reservation.new(
-      party_size: params[:party_size],
-      time_slot_id: params[:time_slot_id],
-      table_assignment_id: params[:table_assignment_id],
-      user_id: current_user.id
-    )
+    @reservation = current_user.reservations.new(reservation_params)
 
-    if reservation.save
+    if @reservation.save
       flash[:notice] = "Reservation successfully created!"
       redirect_to root_path
     else
-      flash[:alert] = reservation.errors.full_messages.join(", ")
-      redirect_back fallback_location: root_path
+      flash[:alert] = @reservation.errors.full_messages.join(", ")
+      redirect_to confirm_reservations_path(reservation: params[:reservation])
     end
   end
 
@@ -96,6 +115,6 @@ class ReservationsController < ApplicationController
   private
 
   def reservation_params
-    params.require(:reservation).permit(:party_size, :status)  # Don't include user_id or time_slot_id in the form
+    params.require(:reservation).permit(:party_size, :time_slot_id, :table_assignment_id)
   end
 end
