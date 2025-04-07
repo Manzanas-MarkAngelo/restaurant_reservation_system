@@ -11,6 +11,10 @@ class TimeSlot < ApplicationRecord
     table_assignments.where(is_available: true).count
   end
 
+  def unreserved_tables
+    table_assignments.where(is_reserved: false).count
+  end
+
   private
 
   # Custom method to check if the start time is unique for the same date

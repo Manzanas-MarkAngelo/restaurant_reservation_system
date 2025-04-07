@@ -1,27 +1,24 @@
 <nav class="navbar navbar-expand-lg bg-body-tertiary navbar-shadow">
   <div class="container-fluid">
+    <a class="navbar-brand" href="/admin_dashboard">ADMIN</a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item">
-            <%= link_to 'User', root_path, class: 'nav-link' %>
-        </li>
-        <li class="nav-item">
-        <%= link_to "My Reservations", my_reservations_reservations_path, class: "btn btn-info", form: { "data-turbo": false }  %>
-        </li>
-        <li class="nav-item">
-            <%= link_to 'Admin Login', admin_login_path, class: 'nav-link' %>
+        <%= link_to "View All Reservations", admin_all_reservations_path, class: "btn btn-outline-primary" %>
         </li>
       </ul>
       <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
         <% if logged_in? %>
           <li class="nav-item">
-            <%= link_to current_user.email, root_path, class: "nav-link" %>
+
           </li>
           <li class="nav-item">
-            <%= button_to "Logout", logout_path, method: :delete, class: "btn btn-outline-secondary", form: { "data-turbo": false } %>
+<%= form_with(url: admin_logout_path, method: :delete, class: 'inline-form') do %>
+  <%= submit_tag 'Logout', class: 'btn btn-danger' %>
+<% end %>
           </li>
         <% else %>
           <li class="nav-item">

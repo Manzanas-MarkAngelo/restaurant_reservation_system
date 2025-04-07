@@ -20,16 +20,15 @@ class TimeSlotsController < ApplicationController
   def create
     @time_slot = TimeSlot.new(time_slot_params)
     @time_slot.is_active = true
-
-    # Set the end time to 1 hour after the selected start time
-    if @time_slot.start_time.present?
-      @time_slot.end_time = @time_slot.start_time + 1.hour
-    end
+    @time_slot.end_time = @time_slot.start_time + 1.hour if @time_slot.start_time.present?
 
     if @time_slot.save
       assign_tables_to_time_slot(@time_slot)
-      redirect_to admin_dashboard_path, notice: "Time slot created and tables assigned successfully."
+      redirect_to admin_dashboard_path, notice: "Time slot created successfully."
     else
+      # Re-initialize required variables for the form
+      @date = time_slot_params[:date] || Date.today
+      @hours = generate_hours_array
       render :new, status: :unprocessable_entity
     end
   end
@@ -94,6 +93,11 @@ class TimeSlotsController < ApplicationController
     table_assignments.where(is_active: true).count
   end
 
+  def unreserved_tables
+    table_assignments.where(is_reserved: false).count
+  end
+
+
   def assign_tables_to_time_slot(time_slot)
     # Grab up to max_tables number of available tables
     available_tables = Table.limit(time_slot.max_tables)
@@ -107,5 +111,10 @@ class TimeSlotsController < ApplicationController
         is_available: true
       )
     end
+  end
+
+  def generate_hours_array
+    # Example: 10 AM to 10 PM in 24-hour format (10..22)
+    (1..24).to_a
   end
 end

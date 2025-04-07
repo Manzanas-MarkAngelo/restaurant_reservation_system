@@ -1,0 +1,41 @@
+<h1>My Reservations</h1>
+
+<% if @reservations.any? %>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Table Number</th>
+        <th>Party Size</th>
+        <th>Date</th>
+        <th>Time Slot</th>
+        <th>Status</th>
+        <th>Action</th> <!-- New column -->
+      </tr>
+    </thead>
+    <tbody>
+      <% @reservations.each do |reservation| %>
+        <tr>
+          <td><%= reservation.table_assignment.table.table_number %></td>
+          <td><%= reservation.party_size %></td>
+          <td><%= reservation.time_slot.date.strftime("%Y-%m-%d") %></td>
+          <td>
+            <%= reservation.time_slot.start_time.strftime("%I:%M %p") %> -
+            <%= reservation.time_slot.end_time.strftime("%I:%M %p") %>
+          </td>
+          <td><%= reservation.status.presence || "Pending" %></td>
+          <td>
+            <% if reservation.status != "Cancelled" %>
+              <%= button_to "Cancel", cancel_reservation_path(reservation), method: :patch, data: { confirm: "Are you sure?" }, class: "btn btn-danger btn-sm" %>
+            <% else %>
+              <span class="text-muted">Cancelled</span>
+            <% end %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% else %>
+  <p>You have no reservations.</p>
+<% end %>
+
+<%= link_to "Back to Dashboard", root_path, class: "btn btn-secondary" %>

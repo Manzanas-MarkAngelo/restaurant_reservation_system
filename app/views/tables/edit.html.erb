@@ -5,11 +5,6 @@
   </div>
   
   <div class="form-group">
-    <%= form.label :is_available, "Availability" %>
-    <%= form.select :is_available, [['Available', true], ['Not Available', false]], {}, class: 'form-control' %>
-  </div>
-
-  <div class="form-group">
     <%= form.submit "Update Table Assignment", class: "btn btn-success" %>
   </div>
 <% end %>

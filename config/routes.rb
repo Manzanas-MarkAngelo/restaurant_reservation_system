@@ -7,10 +7,30 @@ Rails.application.routes.draw do
 
   # Admin dashboard route (fix the controller and action)
   get "admin_dashboard", to: "admin_dashboard#index", as: "admin_dashboard"
+  get "admin_dashboard/all_reservations", to: "admin_dashboard#all_reservations", as: "admin_all_reservations"
 
   get "reservations/index"
   root "pages#home"
-  resources :reservations, only: [ :index ]
+
+  # resources :reservations
+
+  resources :reservations do
+    collection do
+      post "confirm"
+      get "my_reservations"
+    end
+
+    member do
+      get "form"  # This creates form_reservation_path(:id)
+      patch "cancel"
+      patch "admin_cancel", to: "reservations#admin_cancel"
+      get "edit"
+      patch "update"
+    end
+  end
+
+
+
 
   get "register", to: "registration#new", as: "registration"
   post "register", to: "registration#create"
@@ -30,4 +50,5 @@ Rails.application.routes.draw do
 
   # Custom route for creating a static admin
   post "create_static_admin", to: "admin_sessions#create_static_admin", as: :create_static_admin
+  get "user_time_slots", to: "time_slots#user_index"
 end
