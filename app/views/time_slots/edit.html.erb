@@ -1,25 +1,27 @@
-<h2><%= @time_slot.new_record? ? "Add Time Slot" : "Edit Time Slot" %></h2>
-
-<%= form_with model: @time_slot, data: { turbo: false } do |f| %>
-  <div class="mb-3">
-    <%= f.label :date %>
-    <%= f.date_field :date, class: "form-control" %>
+<div class="card mx-auto" style="max-width: 600px;">
+  <div class="card-header text-center">
+    <h4><%= @time_slot.new_record? ? "Add Time Slot" : "Edit Time Slot" %></h4>
   </div>
+  <div class="card-body">
+    <%= form_with model: @time_slot, data: { turbo: false } do |f| %>
+      <div class="mb-3">
+        <%= f.label :date, class: "form-label" %>
+        <%= f.date_field :date, class: "form-control" %>
+      </div>
 
-  <div class="mb-3">
-    <%= f.label :start_time %>
-    <%= f.time_field :start_time, class: "form-control" %>
+      <div class="mb-3">
+        <%= f.label :start_time, class: "form-label" %>
+        <%= f.time_field :start_time, class: "form-control" %>
+      </div>
+
+      <div class="mb-3">
+        <%= f.label :max_tables, "Maximum Number of Tables", class: "form-label" %>
+        <%= f.number_field :max_tables, class: "form-control", min: 1 %>
+      </div>
+
+      <div class="mb-3">
+        <%= f.submit class: "btn btn-primary" %>
+      </div>
+    <% end %>
   </div>
-
-  <div class="mb-3">
-    <%= f.label :max_tables, "Maximum Number of Tables" %>
-    <%= f.number_field :max_tables, class: "form-control", min: 1 %>
-  </div>
-
-  <div class="form-check mb-3">
-    <%= f.check_box :is_active, class: "form-check-input" %>
-    <%= f.label :is_active, class: "form-check-label" %>
-  </div>
-
-  <%= f.submit class: "btn btn-primary" %>
-<% end %>
+</div>

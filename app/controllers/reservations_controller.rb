@@ -115,6 +115,6 @@ class ReservationsController < ApplicationController
   private
 
   def reservation_params
-    params.require(:reservation).permit(:party_size, :time_slot_id, :table_assignment_id)
+    params.require(:reservation).permit(:party_size, :status, :time_slot_id, :table_assignment_id)
   end
 end
