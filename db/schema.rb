@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_04_06_072011) do
+ActiveRecord::Schema[8.0].define(version: 2025_04_06_225809) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -26,12 +26,11 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_06_072011) do
   create_table "reservations", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.bigint "time_slot_id", null: false
-    t.bigint "table_id", null: false
     t.integer "party_size"
     t.string "status"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["table_id"], name: "index_reservations_on_table_id"
+    t.bigint "table_assignment_id"
     t.index ["time_slot_id"], name: "index_reservations_on_time_slot_id"
     t.index ["user_id"], name: "index_reservations_on_user_id"
   end
@@ -75,7 +74,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_06_072011) do
     t.index ["email"], name: "index_users_on_email", unique: true
   end
 
-  add_foreign_key "reservations", "tables"
   add_foreign_key "reservations", "time_slots"
   add_foreign_key "reservations", "users"
   add_foreign_key "table_assignments", "tables"

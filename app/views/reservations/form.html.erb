@@ -1,17 +1,37 @@
-<h1> Set details </h1>
+<h1>Reserve Table <%= @table_assignment.table.table_number %></h1>
 
-<%= form_with(model: @table_assignment, url: table_assignment_path(@table_assignment), local: true) do |form| %>
+<% if @time_slot %>
+  <p>
+    <strong>Time Slot:</strong>
+    <%= @time_slot.start_time.strftime("%I:%M %p") %> -
+    <%= @time_slot.end_time.strftime("%I:%M %p") %>
+  </p>
+<% end %>
+
+<!-- Display current user information (not as form inputs) -->
+<div class="form-group">
+  <strong>Name:</strong>
+  <span><%= @user.full_name %></span>
+</div>
+<div class="form-group">
+  <strong>Contact Number:</strong>
+  <span><%= @user.contact_number %></span>
+</div>
+
+<%= form_with url: reservations_path, method: :post, local: true, data: { turbo: false } do |form| %>
   <div class="form-group">
-    <%= form.label :max_persons, "Max Persons" %>
-    <%= form.number_field :max_persons, min: 1, class: "form-control", required: true %>
-  </div>
-  
-  <div class="form-group">
-    <%= form.label :is_available, "Availability" %>
-    <%= form.select :is_available, [['Available', true], ['Not Available', false]], {}, class: 'form-control' %>
+    <%= form.label :party_size, "Number of Persons" %>
+    <%= form.number_field :party_size, min: 1, max: @table_assignment.max_persons, class: "form-control", required: true %>
+    <small class="form-text text-muted">
+      Maximum allowed: <%= @table_assignment.max_persons %>
+    </small>
   </div>
 
-  <div class="form-group">
-    <%= form.submit "Update Table Assignment", class: "btn btn-success" %>
+  <!-- Include the table_assignment_id and time_slot_id as hidden fields -->
+  <%= form.hidden_field :table_assignment_id, value: @table_assignment.id %>
+  <%= form.hidden_field :time_slot_id, value: @time_slot.id %>
+
+  <div class="form-group mt-3">
+    <%= form.submit "Reserve Table", class: "btn btn-success" %>
   </div>
 <% end %>

@@ -20,5 +20,24 @@ class ReservationsController < ApplicationController
 
   def form
     @table_assignment = TableAssignment.find(params[:id])
+    @time_slot = @table_assignment.time_slot
+    @user = current_user
+  end
+
+  def create
+    reservation = Reservation.new(
+      party_size: params[:party_size],
+      time_slot_id: params[:time_slot_id],
+      table_assignment_id: params[:table_assignment_id],
+      user_id: current_user.id
+    )
+
+    if reservation.save
+      flash[:notice] = "Reservation successfully created!"
+      redirect_to root_path
+    else
+      flash[:alert] = reservation.errors.full_messages.join(", ")
+      redirect_back fallback_location: root_path
+    end
   end
 end

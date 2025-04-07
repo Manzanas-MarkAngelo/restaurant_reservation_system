@@ -94,6 +94,11 @@ class TimeSlotsController < ApplicationController
     table_assignments.where(is_active: true).count
   end
 
+  def unreserved_tables
+    table_assignments.where(is_reserved: false).count
+  end
+
+
   def assign_tables_to_time_slot(time_slot)
     # Grab up to max_tables number of available tables
     available_tables = Table.limit(time_slot.max_tables)
