@@ -61,4 +61,16 @@ class ReservationsController < ApplicationController
 
     redirect_to my_reservations_reservations_path
   end
+
+
+  def admin_cancel
+    reservation = Reservation.find(params[:id])
+
+    # No need to check reservation.user_id against current user
+    reservation.update(status: "Cancelled")
+    reservation.table_assignment.update(is_reserved: false)
+    flash[:notice] = "Reservation cancelled successfully."
+
+    redirect_to admin_all_reservations_path
+  end
 end

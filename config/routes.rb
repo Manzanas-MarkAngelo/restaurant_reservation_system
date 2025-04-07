@@ -7,6 +7,7 @@ Rails.application.routes.draw do
 
   # Admin dashboard route (fix the controller and action)
   get "admin_dashboard", to: "admin_dashboard#index", as: "admin_dashboard"
+  get "admin_dashboard/all_reservations", to: "admin_dashboard#all_reservations", as: "admin_all_reservations"
 
   get "reservations/index"
   root "pages#home"
@@ -21,6 +22,7 @@ Rails.application.routes.draw do
     member do
       get "form"  # This creates form_reservation_path(:id)
       patch "cancel"
+      patch "admin_cancel", to: "reservations#admin_cancel"
     end
   end
 
