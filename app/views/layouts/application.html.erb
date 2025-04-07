@@ -30,9 +30,13 @@
   </head>
     
   <body>
-   <div class="mb-3">
-    <%= render 'shared/navbar' %>
-   </div>
+    <div class="mb-3">
+      <% if session[:admin_id] %>
+        <%= render 'shared/admin_navbar' %> <!-- Render admin navbar if logged in -->
+      <% else %>
+        <%= render 'shared/navbar' %> <!-- Render regular navbar if admin is not logged in -->
+      <% end %>
+    </div>
    <%= render 'shared/flash_messages' %>
     <%= yield %>
   </body>

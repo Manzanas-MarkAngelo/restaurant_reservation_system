@@ -2,7 +2,8 @@
 
 <div class="row">
   <% @table_assignments.each do |assignment| %>
-    <div class="col-md-2 mb-4"> <!-- Changed from col-md-4 to col-md-2 -->
+    <% next if assignment.is_reserved %>
+    <div class="col-md-2 mb-4">
       <div class="card shadow-sm">
         <div class="card-body">
           <h5 class="card-title">Table <%= assignment.table.table_number %></h5>
@@ -21,11 +22,10 @@
               <span class="badge bg-danger">No</span>
             <% end %>
           </p>
-          <%= link_to "Edit", edit_table_assignment_path(assignment), class: "btn btn-primary btn-sm mt-2", data: { turbo: false } %>
+          <%= link_to "Select", form_reservation_path(assignment.id), class: "btn btn-primary btn-sm mt-2", data: { turbo: false } %>
         </div>
       </div>
     </div>
   <% end %>
 </div>
-<%= link_to "Back to Time Slots", admin_dashboard_path, class: "btn btn-secondary mt-3" %>
-
+<%= link_to "Back to Time Slots", root_path, class: "btn btn-secondary mt-3" %>
