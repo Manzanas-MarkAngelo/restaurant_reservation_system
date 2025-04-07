@@ -9,12 +9,6 @@
           <h5 class="card-title">Table <%= assignment.table.table_number %></h5>
           <p class="card-text">
             <strong>Max Persons:</strong> <%= assignment.max_persons %><br>
-            <strong>Available:</strong>
-            <% if assignment.is_available %>
-              <span class="badge bg-success">Yes</span>
-            <% else %>
-              <span class="badge bg-danger">No</span>
-            <% end %>
             <br><strong>Reserved:</strong>
             <% if assignment.is_reserved %>
               <span class="badge bg-success">Yes</span>

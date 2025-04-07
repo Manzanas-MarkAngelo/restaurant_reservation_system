@@ -1,26 +1,33 @@
-<h1>Confirm Your Reservation</h1>
-
-<div class="mb-3">
-  <p><strong>User:</strong> <%= @user.full_name %></p>
-  <p><strong>Time Slot:</strong> <%= @time_slot.start_time.strftime("%I:%M %p") %> - <%= @time_slot.end_time.strftime("%I:%M %p") %></p>
-  <p><strong>Table:</strong> Table <%= @reservation.table_assignment.table.table_number %></p>
-  <p><strong>Party Size:</strong> <%= @reservation.party_size %></p>
-  <!-- If you want to show a default status: -->
-  <p><strong>Status:</strong> <%= @reservation.status.presence || "Pending" %></p>
-</div>
-
-<!-- Confirmation form: This form submits to the create action -->
-<%= form_with model: @reservation, url: reservations_path, method: :post, data: { turbo: false } do |f| %>
-  <!-- Hidden fields to pass along the reservation attributes -->
-  <%= f.hidden_field :party_size %>
-  <%= f.hidden_field :time_slot_id %>
-  <%= f.hidden_field :table_assignment_id %>
-  <!-- Optionally, if you allow status update in creation, you can include it -->
-  <%= f.hidden_field :status, value: "Pending" %>
-  
-  <div class="form-group mt-3">
-    <%= f.submit "Confirm Reservation", class: "btn btn-success" %>
+<div class="card mx-auto" style="max-width: 600px;">
+  <div class="card-header text-center">
+    <h4>Confirm Your Reservation</h4>
   </div>
-<% end %>
+  <div class="card-body">
+    <!-- Display reservation details -->
+    <div class="mb-3">
+      <p><strong>User:</strong> <%= @user.full_name %></p>
+      <p><strong>Time Slot:</strong> <%= @time_slot.start_time.strftime("%I:%M %p") %> - 
+        <%= @time_slot.end_time.strftime("%I:%M %p") %></p>
+      <p><strong>Table:</strong> Table <%= @reservation.table_assignment.table.table_number %></p>
+      <p><strong>Party Size:</strong> <%= @reservation.party_size %></p>
+      <!-- If you want to show a default status: -->
+      <p><strong>Status:</strong> <%= @reservation.status.presence || "Pending" %></p>
+    </div>
 
-<%= link_to "Edit Reservation", form_reservation_path(@reservation.table_assignment_id), class: "btn btn-secondary mt-3" %>
+    <!-- Confirmation form: This form submits to the create action -->
+    <%= form_with model: @reservation, url: reservations_path, method: :post, data: { turbo: false } do |f| %>
+      <!-- Hidden fields to pass along the reservation attributes -->
+      <%= f.hidden_field :party_size %>
+      <%= f.hidden_field :time_slot_id %>
+      <%= f.hidden_field :table_assignment_id %>
+      <!-- Optionally, if you allow status update in creation, you can include it -->
+      <%= f.hidden_field :status, value: "Pending" %>
+
+      <div class="form-group mt-3">
+        <%= f.submit "Confirm Reservation", class: "btn btn-success" %>
+      </div>
+    <% end %>
+
+    <%= link_to "Edit Reservation", form_reservation_path(@reservation.table_assignment_id), class: "btn btn-secondary mt-3" %>
+  </div>
+</div>

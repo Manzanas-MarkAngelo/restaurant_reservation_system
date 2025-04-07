@@ -1,27 +1,32 @@
-<h1>Reserve a Table</h1>
+<div class="card mx-auto" style="max-width: 600px;">
+  <div class="card-header text-center">
+    <h4>Reserve a Table</h4>
+  </div>
+  <div class="card-body">
+    <!-- Display table and time slot info (not submitted) -->
+    <div class="mb-3">
+      <p><strong>Table:</strong> Table <%= @table_assignment.table.table_number %></p>
+      <p><strong>Time Slot:</strong> <%= @time_slot.start_time.strftime("%I:%M %p") %> - 
+        <%= @time_slot.end_time.strftime("%I:%M %p") %></p>
+      <p><strong>User:</strong> <%= @user.full_name %></p>
+    </div>
 
-<!-- Display table and time slot info (not submitted) -->
-<div class="mb-3">
-  <p><strong>Table:</strong> Table <%= @table_assignment.table.table_number %></p>
-  <p><strong>Time Slot:</strong> <%= @time_slot.start_time.strftime("%I:%M %p") %> -
-    <%= @time_slot.end_time.strftime("%I:%M %p") %></p>
-  <p><strong>User:</strong> <%= @user.full_name %></p>
+    <!-- Reservation form that submits to the confirm action -->
+    <%= form_with model: @reservation, url: confirm_reservations_path, method: :post, data: { turbo: false } do |f| %>
+      <div class="form-group">
+        <%= f.label :party_size, "Number of Persons", class: "form-label" %>
+        <%= f.number_field :party_size, class: "form-control", min: 1, required: true %>
+      </div>
+
+      <!-- Hidden fields to carry over necessary data -->
+      <%= f.hidden_field :time_slot_id, value: @time_slot.id %>
+      <%= f.hidden_field :table_assignment_id, value: @table_assignment.id %>
+
+      <div class="form-group mt-3">
+        <%= f.submit "Review Reservation", class: "btn btn-primary" %>
+      </div>
+    <% end %>
+
+    <%= link_to "Back to Time Slots", root_path, class: "btn btn-secondary mt-3" %>
+  </div>
 </div>
-
-<!-- Reservation form that submits to the confirm action -->
-<%= form_with model: @reservation, url: confirm_reservations_path, method: :post, data: { turbo: false } do |f| %>
-  <div class="form-group">
-    <%= f.label :party_size, "Number of Persons" %>
-    <%= f.number_field :party_size, class: "form-control", min: 1, required: true %>
-  </div>
-  
-  <!-- Hidden fields to carry over necessary data -->
-  <%= f.hidden_field :time_slot_id, value: @time_slot.id %>
-  <%= f.hidden_field :table_assignment_id, value: @table_assignment.id %>
-
-  <div class="form-group mt-3">
-    <%= f.submit "Review Reservation", class: "btn btn-primary" %>
-  </div>
-<% end %>
-
-<%= link_to "Back to Time Slots", root_path, class: "btn btn-secondary mt-3" %>
