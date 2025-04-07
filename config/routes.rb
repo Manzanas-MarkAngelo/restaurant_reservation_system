@@ -11,13 +11,20 @@ Rails.application.routes.draw do
   get "reservations/index"
   root "pages#home"
 
-  resources :reservations
+  # resources :reservations
 
   resources :reservations do
+    collection do
+      get "my_reservations"
+    end
+
     member do
       get "form"  # This creates form_reservation_path(:id)
+      patch "cancel"
     end
   end
+
+
 
 
   get "register", to: "registration#new", as: "registration"

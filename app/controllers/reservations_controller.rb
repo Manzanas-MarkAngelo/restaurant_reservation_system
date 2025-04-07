@@ -40,4 +40,25 @@ class ReservationsController < ApplicationController
       redirect_back fallback_location: root_path
     end
   end
+
+  def my_reservations
+    @reservations = current_user.reservations.includes(:time_slot, :table_assignment)
+  end
+  def show
+    @reservation = Reservation.find(params[:id])
+  end
+
+  def cancel
+    reservation = Reservation.find(params[:id])
+
+    if reservation.user_id == current_user.id
+      reservation.update(status: "Cancelled")
+      reservation.table_assignment.update(is_reserved: false)
+      flash[:notice] = "Reservation cancelled successfully."
+    else
+      flash[:alert] = "Unauthorized action."
+    end
+
+    redirect_to my_reservations_reservations_path
+  end
 end

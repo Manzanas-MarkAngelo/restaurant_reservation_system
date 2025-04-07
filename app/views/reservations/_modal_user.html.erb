@@ -29,12 +29,27 @@
                     <% end %>
                   </div>
 
-                  <!-- Only show the "Reserve" button if there are available tables -->
-                  <% if slot.unreserved_tables > 0 %>
-                    <div class="btn-group">
-                      <%= link_to "Reserve", new_reservation_path(time_slot_id: slot.id), class: "btn btn-primary btn-sm" %>
-                    </div>
-                  <% end %>
+                  <!-- Check if the current time is 2 hours or less before the start time -->
+<% if slot.unreserved_tables > 0 %>
+  <% # Safely convert start_time and combine with the date using Time.zone %>
+  <% full_start_time = Time.zone.local(
+        slot.date.year,
+        slot.date.month,
+        slot.date.day,
+        slot.start_time.hour,
+        slot.start_time.min,
+        slot.start_time.sec
+      ) %>
+
+  <% if Time.current >= full_start_time - 2.hours %>
+    <div class="mt-2 text-danger">Reservation Closed</div>
+  <% else %>
+    <div class="btn-group">
+      <%= link_to "Reserve", new_reservation_path(time_slot_id: slot.id), class: "btn btn-primary btn-sm" %>
+    </div>
+  <% end %>
+<% end %>
+
 
                 </div>
               </li>
