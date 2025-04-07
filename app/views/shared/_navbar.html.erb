@@ -11,6 +11,9 @@
         <li class="nav-item">
         <%= link_to "My Reservations", my_reservations_reservations_path, class: "btn btn-info", form: { "data-turbo": false }  %>
         </li>
+        <li class="nav-item">
+            <%= link_to 'Admin Login', admin_login_path, class: 'nav-link' %>
+        </li>
       </ul>
       <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
         <% if logged_in? %>
