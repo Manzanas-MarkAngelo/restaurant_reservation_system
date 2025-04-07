@@ -73,4 +73,29 @@ class ReservationsController < ApplicationController
 
     redirect_to admin_all_reservations_path
   end
+
+  def edit
+    @reservation = Reservation.find(params[:id])
+    @time_slot = @reservation.time_slot
+  end
+
+  def update
+    @reservation = Reservation.find(params[:id])
+    @time_slot = @reservation.time_slot # Critical fix
+
+    if @reservation.update(reservation_params)
+      flash[:notice] = "Reservation updated successfully."
+      redirect_to admin_all_reservations_path
+    else
+      flash[:alert] = @reservation.errors.full_messages.join(", ")
+      render :edit
+    end
+  end
+
+
+  private
+
+  def reservation_params
+    params.require(:reservation).permit(:party_size, :status)  # Don't include user_id or time_slot_id in the form
+  end
 end

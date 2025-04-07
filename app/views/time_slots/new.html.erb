@@ -1,26 +1,43 @@
 <%= form_with(model: @time_slot, url: time_slots_path, local: true) do |form| %>
-  <div class="form-group">
-    <%= form.label :date %>
-    <%= form.date_field :date, value: @date, class: "form-control" %>
+  <%# Date Field with Validation %>
+  <div class="form-group mb-3">
+    <%= form.label :date, class: "form-label" %>
+    <%= form.date_field :date, value: @date, class: "form-control #{'is-invalid' if @time_slot.errors[:date].any?}" %>
+    <% if @time_slot.errors[:date].any? %>
+      <div class="invalid-feedback d-block">
+        <%= @time_slot.errors[:date].join(", ") %>
+      </div>
+    <% end %>
   </div>
 
-  <div class="form-group">
-    <%= form.label :start_time, "Start Time" %>
+  <%# Start Time Field with Validation %>
+  <div class="form-group mb-3">
+    <%= form.label :start_time, "Start Time", class: "form-label" %>
     <%= form.select :start_time, 
-         options_for_select(@hours&.map { |h| ["#{h % 12 == 0 ? 12 : h % 12} #{h < 12 ? 'AM' : 'PM'}", h] }), 
-         { prompt: "Select Start Time" }, class: "form-control" %>
-    <%= @time_slot.errors.full_messages_for(:start_time).join(", ") if @time_slot.errors.any? %>
+         options_for_select((@hours || []).map { |h| ["#{h % 12 == 0 ? 12 : h % 12} #{h < 12 ? 'AM' : 'PM'}", h] }, selected: @time_slot.start_time&.hour),
+         { prompt: "Select Start Time" }, 
+         class: "form-control #{'is-invalid' if @time_slot.errors[:start_time].any?}" %>
+    <% if @time_slot.errors[:start_time].any? %>
+      <div class="invalid-feedback d-block">
+        <%= @time_slot.errors[:start_time].join(", ") %>
+      </div>
+    <% end %>
   </div>
 
-  <div class="form-group">
-    <%= form.label :max_tables, "Max Tables" %>
-    <%= form.number_field :max_tables, class: "form-control", min: 1 %>
-    <%= @time_slot.errors.full_messages_for(:max_tables).join(", ") if @time_slot.errors.any? %>
+  <%# Max Tables Field with Validation %>
+  <div class="form-group mb-3">
+    <%= form.label :max_tables, "Max Tables", class: "form-label" %>
+    <%= form.number_field :max_tables, class: "form-control #{'is-invalid' if @time_slot.errors[:max_tables].any?}", min: 1 %>
+    <% if @time_slot.errors[:max_tables].any? %>
+      <div class="invalid-feedback d-block">
+        <%= @time_slot.errors[:max_tables].join(", ") %>
+      </div>
+    <% end %>
   </div>
 
-  <div class="form-group">
+  <%# Submit Button %>
+  <div class="form-group mb-3">
     <%= form.submit "Add Time Slot", class: "btn btn-primary" %>
+    <%= link_to "Back", admin_dashboard_path(date: @date), class: "btn btn-secondary ms-2" %>
   </div>
 <% end %>
-
-<%= link_to "Back", time_slots_path(date: @date), class: "btn btn-secondary" %>

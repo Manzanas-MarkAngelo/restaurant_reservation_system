@@ -5,7 +5,7 @@ class Reservation < ApplicationRecord
 
   delegate :table, to: :table_assignment
 
-  validates :party_size, presence: true
+  validates :party_size, presence: true, numericality: { only_integer: true, greater_than: 0 }
   validate :party_size_within_limit
 
   # Add callback to mark table assignment as reserved after a reservation is created
